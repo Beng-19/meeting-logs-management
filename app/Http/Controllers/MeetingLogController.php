@@ -32,9 +32,17 @@ class MeetingLogController extends Controller
 
     public function store(Request $request)
     {
-        $meeting = MeetingLog::create($request->all());
-        return response()->json($meeting, 201);
+    $data = $request->all();
+
+    // Tự động tính toán số tuần trong năm dựa vào ngày họp thực tế
+    if ($request->has('meeting_time') && !empty($request->meeting_time)) {
+        $date = \Carbon\Carbon::parse($request->meeting_time);
+        $data['week'] = "Tuần " . $date->weekOfYear; // Kết quả dạng: Tuần 24, Tuần 25...
     }
+
+    $meeting = MeetingLog::create($data);
+    return response()->json($meeting, 201);
+}
 
     public function update(Request $request, $id)
     {

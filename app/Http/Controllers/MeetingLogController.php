@@ -25,9 +25,11 @@ class MeetingLogController extends Controller
 
     public function show($id)
     {
-        $meeting = MeetingLog::with('details')->findOrFail($id);
-        return response()->json($meeting)
-            ->setEncodingOptions(JSON_UNESCAPED_UNICODE);
+    // Bỏ ->with('details') vì tất cả nằm chung một bảng meeting_logs rồi
+    $meeting = MeetingLog::findOrFail($id); 
+    
+    return response()->json($meeting)
+        ->setEncodingOptions(JSON_UNESCAPED_UNICODE);
     }
 
     public function store(Request $request)
